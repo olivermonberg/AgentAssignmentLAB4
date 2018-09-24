@@ -17,7 +17,7 @@
         <local:Agents/>
     </Window.DataContext>
 
-    <Grid Name="dockPanelMain" Background="{StaticResource myBrush}">
+    <Grid Name="dockPanelMain" Background="{DynamicResource myBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="Auto"/>
@@ -36,17 +36,22 @@
                 <MenuItem Header="Up" Command="{Binding PreviusCommand}" />
                 <MenuItem Header="Down" Command="{Binding NextCommand}"/>
                 <MenuItem Header="Add" Command="{Binding AddCommand}" />
-                <MenuItem Header="Delete" Command="{Binding DeleteCommand}" />
+                <MenuItem Header="Delete" Command="{Binding DeleteCommand}"/>
             </MenuItem>
             <MenuItem Header="Color">
-                <MenuItem Header="Blue"/>
-                <MenuItem Header="Yellow"/>
+                <MenuItem Header="Blue" Background="Blue" Command="{Binding ColorCommand}" CommandParameter="Blue"/>
+                <MenuItem Header="Yellow" Background="Yellow" Command="{Binding ColorCommand}" CommandParameter="Yellow"/>
+                <MenuItem Header="Yellow" Background="Green" Command="{Binding ColorCommand}" CommandParameter="Green"/>
             </MenuItem>
         </Menu>
 
         <ToolBar Grid.Row="1" DockPanel.Dock="Top" Height="auto" FontWeight="Bold" FontSize="18">
-            <Button x:Name="LeftBttnTool" Margin="5" Command="{Binding PreviusCommand}" Content="&lt;"></Button>
-            <Button x:Name="RightBttnTool" Margin="5" Command="{Binding NextCommand}" Content="&gt;"></Button>
+            <Button x:Name="LeftBttnTool" Margin="5" Command="{Binding PreviusCommand}" >
+                <Image Source="leftBttn.png" MaxWidth="30"></Image>
+            </Button>
+            <Button x:Name="RightBttnTool" Margin="5" Command="{Binding NextCommand}" >
+                <Image Source="rightBttn.png" MaxWidth="30"></Image>
+            </Button>
             <Button x:Name="AddBttnTool" Margin="5" Command="{Binding AddCommand}" Content="+"></Button>
             <Button x:Name="RemoveBttnTool" Margin="5" Command="{Binding DeleteCommand}" Content="-"></Button>
             <Label Content="File _Name: " 

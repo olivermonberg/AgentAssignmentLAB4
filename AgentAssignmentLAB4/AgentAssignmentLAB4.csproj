@@ -98,5 +98,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Bitmap1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="leftBttn.png" />
+    <Resource Include="rightBttn.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Xml.Serialization;
 
 namespace AgentAssignment
@@ -206,6 +207,18 @@ namespace AgentAssignment
         private bool SaveFileCommand_CanExecute()
         {
             return (filename != "") && (Count > 0);
+        }
+
+        ICommand _ColorCommand;
+        public ICommand ColorCommand
+        {
+            get { return _ColorCommand ?? (_ColorCommand = new RelayCommand<string>(ColorCommand_Execute)); }
+        }
+
+        private void ColorCommand_Execute(string color)
+        {
+            Application.Current.MainWindow.Resources["myBrush"] = 
+                new SolidColorBrush((Color)ColorConverter.ConvertFromString(color));
         }
 
         #endregion // Commands
