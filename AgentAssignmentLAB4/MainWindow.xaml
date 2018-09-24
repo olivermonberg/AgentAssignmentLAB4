@@ -6,40 +6,60 @@
         xmlns:local="clr-namespace:AgentAssignment"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+
+
     <Window.Resources>
-        <local:Agents x:Key="agents" />
+        <SolidColorBrush x:Key="myBrush" Color="Beige" />
     </Window.Resources>
+
 
     <Window.DataContext>
         <local:Agents/>
     </Window.DataContext>
 
-    <Window.CommandBindings>
-        <CommandBinding Command="ApplicationCommands.Close"
-                        Executed="CloseCommand_Executed" 
-                        />
-    </Window.CommandBindings>
-
-    <DockPanel Name="dockPanelMain" >
-        <Menu DockPanel.Dock="Top" Name="Menu">
+    <Grid Name="dockPanelMain" Background="{StaticResource myBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0" DockPanel.Dock="Top" Name="Menu">
             <MenuItem Header="_File">
-                <MenuItem Header="Close" />
+                <MenuItem Header="_New File" Command="{Binding  NewFileCommand}"/>
+                <MenuItem Header="_Open File" Command="{Binding  OpenFileCommand}" CommandParameter="{Binding ElementName=tbxFileName, Path=Text}" />
+                <MenuItem Header="_Save" Command="{Binding SaveCommand}"/>
+                <MenuItem Header="Save _As" Command="{Binding SaveAsCommand}" CommandParameter="{Binding ElementName=tbxFileName, Path=Text}" />
+                <MenuItem Header="E_xit" Command="{Binding CloseAppCommand}"/>
             </MenuItem>
             <MenuItem Header="_Agents">
-                <MenuItem Header="Up"  />
-                <MenuItem Header="Down" />
+                <MenuItem Header="Up" Command="{Binding PreviusCommand}" />
+                <MenuItem Header="Down" Command="{Binding NextCommand}"/>
                 <MenuItem Header="Add" Command="{Binding AddCommand}" />
+                <MenuItem Header="Delete" Command="{Binding DeleteCommand}" />
+            </MenuItem>
+            <MenuItem Header="Color">
+                <MenuItem Header="Blue"/>
+                <MenuItem Header="Yellow"/>
             </MenuItem>
         </Menu>
 
-        <ToolBar DockPanel.Dock="Top" Height="auto" FontWeight="Bold" FontSize="18">
-            <Button x:Name="LeftBttnTool" Margin="5" Content="&lt;"></Button>
+        <ToolBar Grid.Row="1" DockPanel.Dock="Top" Height="auto" FontWeight="Bold" FontSize="18">
+            <Button x:Name="LeftBttnTool" Margin="5" Command="{Binding PreviusCommand}" Content="&lt;"></Button>
             <Button x:Name="RightBttnTool" Margin="5" Command="{Binding NextCommand}" Content="&gt;"></Button>
             <Button x:Name="AddBttnTool" Margin="5" Command="{Binding AddCommand}" Content="+"></Button>
-            <Button x:Name="RemoveBttnTool" Margin="5" Content="-"></Button>
+            <Button x:Name="RemoveBttnTool" Margin="5" Command="{Binding DeleteCommand}" Content="-"></Button>
+            <Label Content="File _Name: " 
+                   FontSize="12"
+                   VerticalAlignment="Center" Target="{Binding ElementName=tbxFileName}" />
+            <TextBox Name="tbxFileName"
+                     FontSize="12"
+                     VerticalAlignment="Center"
+                     MinWidth="100"
+            />
         </ToolBar>
 
-        <Grid ShowGridLines="True" >
+        <Grid Grid.Row="2" ShowGridLines="True" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
@@ -103,7 +123,7 @@
                     </Style>
                 </Grid.Resources>
 
-                <ListBox Name="ListBoxAgents" ItemsSource="{Binding}"
+                <ListBox x:Name="ListBoxAgents" ItemsSource="{Binding}"
                          DisplayMemberPath="CodeName" IsSynchronizedWithCurrentItem="True"
                          SelectedIndex="{Binding Path=CurrentIndex}"></ListBox>
 
@@ -111,5 +131,17 @@
             </Grid>
 
         </Grid>
-    </DockPanel>
+        <StatusBar Grid.Row="3" Height="25">
+            <StatusBarItem Content="Agents Count:" />
+            <StatusBarItem Name="sbiAgentsCount" Width="40"
+                           Content="{Binding Path=Count}" />
+            <StatusBarItem Name="sbiDateTime" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal" Name="spClock">
+                    <TextBlock Margin="4,0" Name="tblkDate" Text="{Binding Path=Date}" />
+                    <TextBlock Margin="4,0" Name="tblkTime" Text="{Binding Path=Time}" />
+                </StackPanel>
+            </StatusBarItem>
+        </StatusBar>
+
+    </Grid>
 </Window>
